@@ -1,0 +1,28 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+.deals-wrap {
+    box-shadow: 0 0 5px #ccc;
+    margin: 20px;
+}
+.deal-image {
+    padding-left: 0px;
+}
+.deal-info {
+    padding: 20px;
+}
+.deal-title h2 a, .deal-title h2 {
+    color: #d4a001;
+}
+.deal-description {
+	margin-top: 15px;
+}
+#header-title {
+	font-size: 30px;
+	text-align: center;
+}
+#date {
+	border: 1px solid #929292;
+	padding: 2px;
+}
