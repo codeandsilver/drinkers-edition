@@ -25,19 +25,33 @@ get_header(); ?>
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
-			
+		
+						
 			<article id="post-1" class="post-1 post type-post status-publish format-standard hentry category-uncategorized">		
 		 
 			
-			<h1 id="header-title">Happy Hour Deals</h1>			
-			<?php 	$gmt_time_hour = date( 'H', current_time( 'timestamp', 1 ) );
-				$gmt_time_minute = date( 'i', current_time( 'timestamp', 1 ) );
-				$gm_adjust = $gmt_time_hour - 5;
-				$current_time = $gm_adjust;
+						
+			<?php 	
 			
-			//echo "Current Time: " . $current_time; 
-			//echo '<br>'.$start_time;
-			//echo $end_time;			
+			date_default_timezone_set('America/Chicago');
+			$currenttime = date('h:i:s:u');
+			list($hrs,$mins,$secs,$msecs) = split(':',$currenttime);
+			echo '<p style="margin:5px 10px;">Current Time: ' . $hrs . ':' . $mins . '</p>';
+			
+			$dow_numeric = date('w');
+			$dow_text = date('l', strtotime("Sunday +{$dow_numeric} days"));
+			echo '<p style="margin:5px 10px 20px;">Day of the Week: ' . $dow_text . '</p>';
+			$dow_text = strtolower($dow_text);
+			
+			$current_time = 24;
+			
+			
+			echo '<h1 id="header-title">Happy Hour Deals</h1>';
+			
+			echo '<br>'.$start_time;
+			
+			   
+					
 			echo "<h3 style='margin:20px 0px; text-align:center;'>Happy Hour Now</h3>";
 
 			  $loop = new WP_Query( array( 'post_type' => array('happy-hours', 'deals', 'facebook-deals'),
@@ -62,13 +76,18 @@ get_header(); ?>
 							     array(
 							       'key' => 'start_time',
 							       'value' => $current_time,
-							       'compare' => '<'
+							       'compare' => '<='
 							     ),
 							     array(
 							       'key' => 'end_time',
 							       'value' => $current_time,
-							       'compare' => '>'
-							     ),						
+							       'compare' => '>='
+							     ),
+							     array(
+							       'key' => '_deal_day',
+							       'value' => $dow_text,
+							       'compare' => 'LIKE'
+							     ),				
 							     array(
 							       'key' => 'happy_hour',
 							       'value' => $happy_hour,
@@ -99,8 +118,23 @@ get_header(); ?>
 						    echo esc_html( 'Type: ' . $categories[0]->name );   
 						} ?>
 						</div>
-						<div class="deal-date">
-			                    	Deal Date: <?php echo get_the_date( 'F j, Y' ); ?>
+						<div class="deal-day">
+			                    	<?php $deal_day = get_post_meta( get_the_ID(), '_deal_day', true );
+			                    		if (count($deal_day) === 1) {
+								    echo 'Day: ';
+								    foreach ($deal_day as $day) {
+				                    			echo $day;
+				                    			}
+								} else {
+			                    		echo 'Days: ';			                    		
+			                    		foreach ($deal_day as $day) {
+			                    			$result .= $day . ', ';
+			                    			}
+			                    			$result = rtrim($result,', ');
+								echo $result;
+			                    		}
+			                    		unset($result);
+			                    	 ?>
 						</div>
 						<div class="deal-time">
 						<?php   $time_number = get_post_meta( get_the_ID(), 'start_time', true );
@@ -108,6 +142,7 @@ get_header(); ?>
 							$time_in_12_hour_format = date("g:i a", strtotime($time_military));
 							
 							$time_number_end = get_post_meta( get_the_ID(), 'end_time', true );
+							if ($time_number_end > 23 ) { $time_number_end = $time_number_end - 24;}
 							$time_military_end = $time_number_end . ':00';
 						      	$time_in_12_hour_end_format = date("g:i a", strtotime($time_military_end));
 						      	
@@ -131,7 +166,10 @@ get_header(); ?>
 
 			  $loop_2 = new WP_Query( array( 'post_type' => array('happy-hours', 'deals', 'facebook-deals'),
 						    'paged' => $paged, 
-						    'cat' => $deal_cat, 
+						    'cat' => $deal_cat,
+						    'order' => 'ASC',
+						    'orderby' => 'meta_value',
+						    'meta_key' => 'start_time',
 						    'date_query' => array(
 									array(
 										'year'  => $year,
@@ -139,19 +177,24 @@ get_header(); ?>
 										'day'   => $day,
 									     ),
 									array(
-										'hour'      => $deal_time,
+										'hour'      => $deal_times,
 										'compare'   => '>=',
 									),
 									array(
-										'hour'      => $end_time,
+										'hour'      => $end_times,
 										'compare'   => '<=',
 									),
 								),
 							'meta_query' => array(							    
 							     array(
-							       'key' => 'end_time',
+							       'key' => 'start_time',
 							       'value' => $current_time,
 							       'compare' => '<'
+							     ),
+							      array(
+							       'key' => '_deal_day',
+							       'value' => $dow_text,
+							       'compare' => 'LIKE'
 							     ),						
 							     array(
 							       'key' => 'happy_hour',
@@ -183,8 +226,23 @@ get_header(); ?>
 						    echo esc_html( 'Type: ' . $categories[0]->name );   
 						} ?>
 						</div>
-						<div class="deal-date">
-			                    	Deal Date: <?php echo get_the_date( 'F j, Y' ); ?>
+						<div class="deal-day">
+			                    	<?php $deal_day = get_post_meta( get_the_ID(), '_deal_day', true );
+			                    		if (count($deal_day) === 1) {
+								    echo 'Day: ';
+								    foreach ($deal_day as $day) {
+				                    			echo $day;
+				                    			}
+								} else {
+			                    		echo 'Days: ';			                    		
+			                    		foreach ($deal_day as $day) {
+			                    			$result .= $day . ', ';
+			                    			}
+			                    			$result = rtrim($result,', ');
+								echo $result;
+			                    		} 
+			                    		unset($result);
+			                    	 ?>
 						</div>
 						<div class="deal-time">
 						<?php   $time_number = get_post_meta( get_the_ID(), 'start_time', true );
@@ -192,6 +250,7 @@ get_header(); ?>
 							$time_in_12_hour_format = date("g:i a", strtotime($time_military));
 							
 							$time_number_end = get_post_meta( get_the_ID(), 'end_time', true );
+							if ($time_number_end > 23 ) { $time_number_end = $time_number_end - 24;}
 							$time_military_end = $time_number_end . ':00';
 						      	$time_in_12_hour_end_format = date("g:i a", strtotime($time_military_end));
 						      	
