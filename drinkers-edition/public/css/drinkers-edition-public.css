@@ -29,3 +29,6 @@
 .deal-day {
 	text-transform: capitalize;
 }
+#alcohol-detail {
+	margin: 15px 0px 10px;
+}
