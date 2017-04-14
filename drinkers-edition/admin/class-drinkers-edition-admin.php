@@ -230,24 +230,25 @@ class Drinkers_Edition_Admin {
 	
 		    wp_nonce_field( 'deal_info_meta_box', 'deal_info_meta_box_nonce' );
 		 
-		    		    
+		    //Start Time Instance		    
 		    $outline = NEW Drinkers_Edition_Admin_forms();
 		    $outline->selected = get_post_meta( $meta_id->ID, 'start_time', true );
 		    $outline->select_name ='start_time';
 		    $outline->select_label_text = 'Deal Start Time';
 		    $outline->select_textdomain = 'deal-start-time';
-		    $outline->select_options = array('--:--'=>' ', '12:00 AM'=>'0', '1:00 AM'=>'1', '2:00 AM'=>'2', '3:00 AM'=>'3', '4:00 AM'=>'4', '5:00 AM'=>'5', '6:00 AM'=>'6', '7:00 AM'=>'7', '8:00 AM'=>'8', '9:00 AM'=>'9', '10:00 AM'=>'10', '11:00 AM'=>'11', '12:00 PM'=>'12', '1:00 PM'=>'13', '2:00 PM'=>'14', '3:00 PM'=>'15', '4:00 PM'=>'16', '5:00 PM'=>'17', '6:00 PM'=>'18', '7:00 PM'=>'19', '8:00 PM'=>'20', '9:00 PM'=>'21', '10:00 PM'=>'22', '11:00 PM'=>'23');
+		    $outline->select_options = array('--:--'=>' ', '5:00 AM'=>'0', '5:30 AM'=>'0030', '6:00 AM'=>'0100', '6:30 AM'=>'0130', '7:00 AM'=>'0200', '7:30 AM'=>'0230', '8:00 AM'=>'0300', '8:30 AM'=>'0330', '9:00 AM'=>'0400', '9:30 AM'=>'0430', '10:00 AM'=>'0500', '10:30 AM'=>'0530', '11:00 AM'=>'0600', '11:30 AM'=>'0630', '12:00 PM'=>'0700', '12:30 PM'=>'0730', '1:00 PM'=>'0800', '1:30 PM'=>'0830', '2:00 PM'=>'0900', '2:30 PM'=>'0930', '3:00 PM'=>'1000', '3:30 PM'=>'1030', '4:00 PM'=>'1100', '4:30 PM'=>'1130', '5:00 PM'=>'1200', '5:30 PM'=>'1230', '6:00 PM'=>'1300', '6:30 PM'=>'1330', '7:00 PM'=>'1400', '7:30 PM'=>'1430', '8:00 PM'=>'1500', '8:30 PM'=>'1530', '9:00 PM'=>'1600', '9:30 PM'=>'1630', '10:00 PM'=>'1700', '10:30 PM'=>'1730', '11:00 PM'=>'1800', '11:30 PM'=>'1830', '*12:00 AM'=>'1900', '*12:30 AM'=>'1930', '*1:00 AM'=>'2000', '*1:30 AM'=>'2030', '*2:00 AM'=>'2100', '*2:30 AM'=>'2130', '*3:00 AM'=>'2200', '*3:30 AM'=>'2230', '*4:00 AM'=>'2300', '*4:30 AM'=>'2330');
 		    
 		    echo $outline->hours_select();
 		    
 		    echo '</br></br>';
 		    
+		    //End Time Instance
 		    $outline_end = NEW Drinkers_Edition_Admin_forms();
 		    $outline_end->selected = get_post_meta( $meta_id->ID, 'end_time', true );
 		    $outline_end->select_name ='end_time';
 		    $outline_end->select_label_text = 'Deal End Time';		
 		    $outline_end->select_textdomain = 'deal-end-time';
-		    $outline_end->select_options = array('--:--'=>' ', '12:00 AM'=>'0', '1:00 AM'=>'1', '2:00 AM'=>'2', '3:00 AM'=>'3', '4:00 AM'=>'4', '5:00 AM'=>'5', '6:00 AM'=>'6', '7:00 AM'=>'7', '8:00 AM'=>'8', '9:00 AM'=>'9', '10:00 AM'=>'10', '11:00 AM'=>'11', '12:00 PM'=>'12', '1:00 PM'=>'13', '2:00 PM'=>'14', '3:00 PM'=>'15', '4:00 PM'=>'16', '5:00 PM'=>'17', '6:00 PM'=>'18', '7:00 PM'=>'19', '8:00 PM'=>'20', '9:00 PM'=>'21', '10:00 PM'=>'22', '11:00 PM'=>'23', '*12:00 AM'=>'24', '*1:00 AM'=>'25', '*2:00 AM'=>'26', '*3:00 AM'=>'27', '*4:00 AM'=>'28', '*5:00 AM'=>'29', '*6:00 AM'=>'30', '*7:00 AM'=>'31', '8:00 AM'=>'32');
+		    $outline_end->select_options = array('--:--'=>' ', '5:00 AM'=>'0', '5:30 AM'=>'0030', '6:00 AM'=>'0100', '6:30 AM'=>'0130', '7:00 AM'=>'0200', '7:30 AM'=>'0230', '8:00 AM'=>'0300', '8:30 AM'=>'0330', '9:00 AM'=>'0400', '9:30 AM'=>'0430', '10:00 AM'=>'0500', '10:30 AM'=>'0530', '11:00 AM'=>'0600', '11:30 AM'=>'0630', '12:00 PM'=>'0700', '12:30 PM'=>'0730', '1:00 PM'=>'0800', '1:30 PM'=>'0830', '2:00 PM'=>'0900', '2:30 PM'=>'0930', '3:00 PM'=>'1000', '3:30 PM'=>'1030', '4:00 PM'=>'1100', '4:30 PM'=>'1130', '5:00 PM'=>'1200', '5:30 PM'=>'1230', '6:00 PM'=>'1300', '6:30 PM'=>'1330', '7:00 PM'=>'1400', '7:30 PM'=>'1430', '8:00 PM'=>'1500', '8:30 PM'=>'1530', '9:00 PM'=>'1600', '9:30 PM'=>'1630', '10:00 PM'=>'1700', '10:30 PM'=>'1730', '11:00 PM'=>'1800', '11:30 PM'=>'1830', '*12:00 AM'=>'1900', '*12:30 AM'=>'1930', '*1:00 AM'=>'2000', '*1:30 AM'=>'2030', '*2:00 AM'=>'2100', '*2:30 AM'=>'2130', '*3:00 AM'=>'2200', '*3:30 AM'=>'2230', '*4:00 AM'=>'2300', '*4:30 AM'=>'2330');
 		    
 		    echo $outline_end->hours_select();
 		    echo '</br> ( * = Next Day )';
@@ -275,6 +276,12 @@ class Drinkers_Edition_Admin {
   		    <input type="checkbox" name="alcohol_deal[]" value="liquor" <?php if (in_array('liquor', $alcohol_deal)) {echo 'checked';} ?>><span style="margin-right:10px;"> Liquor</span>
   		    <?php
 		    
+		    echo '</br></br>';
+		    
+		    $alcohol_deal_details_return = get_post_meta( $meta_id->ID, 'alcohol_deal_detail', true );
+		    
+		    echo  '<label for="alcohol-deal-detail" class="alcohol-detail" style="width:150px; display:inline-block;    margin-top: -40px;">'. esc_html__('Alcohol Type Details', 'alcohol-deal-details') .'</label>';
+		    echo '<textarea form ="post" name="alcohol_deal_detail" id="alcohol-deal-detail" cols="55" wrap="soft" >'.$alcohol_deal_details_return.'</textarea>';
 		    
 		    echo '</br></br>';
 		    
@@ -289,6 +296,13 @@ class Drinkers_Edition_Admin {
 		    
 		    echo '</br></br>';
 		    
+		    $food_deal_details_return = get_post_meta( $meta_id->ID, 'food_deal_detail', true );
+		    
+		    echo  '<label for="food-deal-detail" class="food-detail" style="width:150px; display:inline-block;    margin-top: -40px;">'. esc_html__('Food Details', 'food-deal-details') .'</label>';
+		    echo '<textarea form ="post" name="food_deal_detail" id="food-deal-detail" cols="55" wrap="soft" >'.$food_deal_details_return.'</textarea>';
+		    
+		    echo '</br></br>';
+		    
 		    $outline_deal_location = '<label for="deal_location" style="width:150px; display:inline-block;">'. esc_html__('Location', 'deal-location') .'</label>';
 		    $deal_location= get_post_meta( $meta_id->ID, 'deal_location', true );
 		    $outline_deal_location .= '<input type="text" name="deal_location" id="deal_location" class="deal_location" value="'. esc_attr($deal_location) .'" style="width:300px;"/>';
@@ -296,10 +310,16 @@ class Drinkers_Edition_Admin {
 		    $outline_neighborhood = '<label for="neighborhood" style="width:150px; display:inline-block;">'. esc_html__('Neighborhood', 'neighborhood') .'</label>';
 		    $neighborhood = get_post_meta( $meta_id->ID, 'neighborhood', true );
 		    $outline_neighborhood .= '<input type="text" name="neighborhood" id="neighborhood" class="neighborhood" value="'. esc_attr($neighborhood) .'" style="width:300px;"/>';
+		    
+		    $outline_website = '<label for="website" style="width:150px; display:inline-block;">'. esc_html__('Website', 'website') .'</label>';
+		    $website = get_post_meta( $meta_id->ID, 'website', true );
+		    $outline_website .= '<input type="text" name="website" id="website" class="website" value="'. $website .'" style="width:300px;"/>';
 		 
 		    echo $outline_deal_location;
 		    echo '</br></br>';
 		    echo $outline_neighborhood;
+		    echo '</br></br>';
+		    echo $outline_website;
 		    
 		    
 		    $deal_day = get_post_meta( $meta_id->ID, '_deal_day', true );
@@ -368,6 +388,9 @@ class Drinkers_Edition_Admin {
 	        $neighborhood_data = sanitize_text_field( $_POST['neighborhood'] );
 	        $location_data = sanitize_text_field( $_POST['deal_location'] );
 	        $day_data = $_POST['deal_day'];
+	        $alcohol_deal_detail = $_POST['alcohol_deal_detail'];
+	        $food_deal_detail = $_POST['food_deal_detail'];
+	        $website_data = $_POST['website'];
 	 
 	        // Update the meta field.
 	        update_post_meta( $post_id, 'end_time', $end_data );
@@ -378,6 +401,9 @@ class Drinkers_Edition_Admin {
 	        update_post_meta( $post_id, 'neighborhood', $neighborhood_data );
 	        update_post_meta( $post_id, 'deal_location', $location_data );
 	        update_post_meta( $post_id, '_deal_day', $day_data );
+	        update_post_meta( $post_id, 'alcohol_deal_detail', $alcohol_deal_detail );
+	        update_post_meta( $post_id, 'food_deal_detail', $food_deal_detail );
+	        update_post_meta( $post_id, 'website', $website_data );
    	}
    	
    	 	 
