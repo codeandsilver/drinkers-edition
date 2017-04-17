@@ -32,3 +32,27 @@
 #alcohol-detail {
 	margin: 15px 0px 10px;
 }
+.deal-title {
+	
+}
+.deal-heart {
+	float: right;
+}
+.hearted {
+	background: #fff;
+	color: #d90000;
+	padding: 0px;
+	font-size: 30px;	
+}
+.hearted:hover, .hearted:active, .hearted:focus {
+	background: #fff;
+}
+.heart {
+	background: #fff;
+	color: #cb6d6d;
+	padding: 0px;
+	font-size: 30px;	
+}
+.heart:hover, .heart:active, .heart:focus {
+	background: #fff;
+}
