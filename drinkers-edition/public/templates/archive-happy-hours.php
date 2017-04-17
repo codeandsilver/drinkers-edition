@@ -7,6 +7,10 @@
 
 get_header(); ?>
 
+	<script>
+	var userid = <?php echo get_current_user_id(); ?>
+	</script>
+		
 	<?php
 		$deal_cat = $_GET["cat"];
 		$deal_time = $_GET["deal-time"];
@@ -15,21 +19,24 @@ get_header(); ?>
 		$orderdate = $_GET["date"];
 		$start_time = $_GET["start_time"];
 		$end_time = $_GET["end_time"];
+		$hearted_deal = $_GET["hearted-deal"];
 		
 		$orderdate = explode('-', $orderdate);
 		$month = (int)$orderdate[1];
 		$day   = (int)$orderdate[0];
 		$year  = $orderdate[2];
+		
+		if ($hearted_deal == 1) {
+		$hearted_deals = get_current_user_id();
+		}
+		
 	
 	?>
 
 	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
-		
+		<main id="main" class="site-main" role="main">		
 						
-			<article id="post-1" class="post-1 post type-post status-publish format-standard hentry category-uncategorized">		
-		 
-			
+			<article id="post-1" class="post-1 post type-post status-publish format-standard hentry category-uncategorized">
 						
 			<?php 	
 			
@@ -38,16 +45,17 @@ get_header(); ?>
 			list($hrs,$mins,$secs,$msecs) = split(':',$currenttime);
 			echo '<p style="margin:5px 10px;">Current Time: ' . $hrs . ':' . $mins . '</p>';
 			
-			$dow_numeric = date('w');
-			$dow_text = date('l', strtotime("Sunday +{$dow_numeric} days"));
-			echo '<p style="margin:5px 10px 20px;">Day of the Week: ' . $dow_text . '</p>';
-			$dow_text = strtolower($dow_text);
-			
 			$adjusted_hrs = $hrs + 7;
 			
 			
 			If ($hrs >= 1 && $hrs <= 5 ) {$adjusted_hrs = $hrs + 19;}
 			$current_time = $adjusted_hrs . $mins;
+			
+			date_default_timezone_set('Pacific/Honolulu');
+			$dow_numeric = date('w');
+			$dow_text = date('l', strtotime("Sunday +{$dow_numeric} days"));
+			echo '<p style="margin:5px 10px 20px;">Day of the Week: ' . $dow_text . '</p>';
+			$dow_text = strtolower($dow_text);
 			
 			
 			echo '<h1 id="header-title">Happy Hour Deals</h1>';
@@ -96,7 +104,7 @@ get_header(); ?>
 							       'key' => 'happy_hour',
 							       'value' => $happy_hour,
 							       'compare' => 'LIKE'
-							     )
+							     )							      
 							   ),
 						 ) 
 					     );
@@ -113,6 +121,21 @@ get_header(); ?>
 			                	<div class="deal-title">
 			                    		<h2><a href="<?php the_permalink(); ?>"><?php echo get_the_title(); ?></a></h2>
 			                    	</div>
+			                    	
+			                    	<?php $id = get_the_ID(); 
+			                    	$hearted = get_post_meta( get_the_ID(), 'hearted', false );
+			                    	$current_user_id = get_current_user_id();
+			                    	?>
+			                    	
+			                    	<div class="deal-heart">
+			                    	<?php if (in_array($current_user_id, $hearted)) { ?>
+			                    	<button id="hearted-<?php echo get_the_ID(); ?>" class="hearted" data-postid="<?php echo get_the_ID(); ?>">
+			                    	<i class="fa fa-heart" aria-hidden="true"></i></button>	
+			                    	<?php } else { ?>
+			                    	<button id="heart-<?php echo get_the_ID(); ?>" class="heart" data-postid="<?php echo get_the_ID(); ?>">
+			                    	<i class="fa fa-heart" aria-hidden="true"></i></button>	<?php } ?>		                    	
+			                    	</div>
+			                    				                    	                  	
 			                    	<div class="deal-description">
 			                    	
 				                    	<?php 
@@ -145,7 +168,13 @@ get_header(); ?>
 								<h5><b>
 								<?php   $time_number = get_post_meta( get_the_ID(), 'start_time', true );
 								        $time_military = $time_number + 500;
-								        $time_check = date("i", strtotime($time_military));
+								        $time_check = date("i", strtotime($time_number));
+								        
+								        if ($time_number >= 2000 ) { $time_number = $time_number - 1900; 
+									$time_military = $time_number;
+									
+									$time_military = str_pad($time_number, 4, '0', STR_PAD_LEFT);
+									} else { $time_military = $time_number + 500; }
 									
 									if ($time_number < 1900 ) {
 									
@@ -200,10 +229,10 @@ get_header(); ?>
 			                    		
 			                    	</div>
 			                    	<div class="deal-type">
-			                    	<?php $categories = get_the_category(); 
+			                    	<!-- <?php $categories = get_the_category(); 
 						if ( ! empty( $categories ) ) {
-						    echo esc_html( 'Type: ' . $categories[0]->name );   
-						} ?>
+						   echo esc_html( 'Type: ' . $categories[0]->name );   
+						} ?> -->
 						</div>
 						<div class="deal-day">
 			                    	<!-- <?php $deal_day = get_post_meta( get_the_ID(), '_deal_day', true );
@@ -264,9 +293,9 @@ get_header(); ?>
 							     array(
 							       'key' => 'start_time',
 							       'value' => $current_time,
-							       'compare' => '<'
+							       'compare' => '>'
 							     ),
-							      array(
+							     array(
 							       'key' => '_deal_day',
 							       'value' => $dow_text,
 							       'compare' => 'LIKE'
@@ -275,7 +304,7 @@ get_header(); ?>
 							       'key' => 'happy_hour',
 							       'value' => $happy_hour,
 							       'compare' => 'LIKE'
-							     )
+							     )							     
 							   ),
 						 ) 
 					     );
@@ -292,17 +321,121 @@ get_header(); ?>
 			                	<div class="deal-title">
 			                    		<h2><a href="<?php the_permalink(); ?>"><?php echo get_the_title(); ?></a></h2>
 			                    	</div>
+			                    	
+			                    	<?php $id = get_the_ID(); 
+			                    	$hearted = get_post_meta( get_the_ID(), 'hearted', false );
+			                    	$current_user_id = get_current_user_id();
+			                    	?>
+			                    	
+			                    	<div class="deal-heart">
+			                    	<?php if (in_array($current_user_id, $hearted)) { ?>
+			                    	<button id="hearted-<?php echo get_the_ID(); ?>" class="hearted" data-postid="<?php echo get_the_ID(); ?>">
+			                    	<i class="fa fa-heart" aria-hidden="true"></i></button>	
+			                    	<?php } else { ?>
+			                    	<button id="heart-<?php echo get_the_ID(); ?>" class="heart" data-postid="<?php echo get_the_ID(); ?>">
+			                    	<i class="fa fa-heart" aria-hidden="true"></i></button>	<?php } ?>		                    	
+			                    	</div>
+			                    				                    	                  	
 			                    	<div class="deal-description">
+			                    	
+				                    	<?php 
+				                    	$alcohol_deal = get_post_meta( get_the_ID(), 'alcohol_deal', true );
+				                    	$alcohol_deal_detail = get_post_meta( get_the_ID(), 'alcohol_deal_detail', true );
+				                    	$food_deal = get_post_meta( get_the_ID(), 'food_deal', true );
+				                    	$food_deal_detail = get_post_meta( get_the_ID(), 'food_deal_detail', true );
+				                    	$deal_website = get_post_meta( get_the_ID(), 'website', true );
+				                    	
+				                    	if (!empty($alcohol_deal)) { ?>				              
+				                    	<h4><b><i class="fa fa-glass fa-2x"></i>  Drink Specials</b></h4>				                    	
+				                    	
+				                    	<div id="alcohol-detail">				                    	
+				                    	<?php echo $alcohol_deal_detail; ?>
+				                    	</div>
+				                    	
+				                    	<?php } 
+				                    	
+				                    	if ($food_deal == 1) { ?>				              
+				                    	<h4><b><i class="fa fa-cutlery fa-2x"></i>  Food Specials</b></h4>
+				                    	
+				                    	
+				                    	<div id="alcohol-detail">				                    	
+				                    	<?php echo $food_deal_detail; ?>
+				                    	</div>
+				                    	
+				                    	<?php } ?>
+				                    	
+				                    	<div class="deal-time">
+								<h5><b>
+								<?php   $time_number = get_post_meta( get_the_ID(), 'start_time', true );
+								        $time_military = $time_number + 500;
+								        $time_check = date("i", strtotime($time_number));
+								        
+								        if ($time_number >= 2000 ) { $time_number = $time_number - 1900; 
+									$time_military = $time_number;
+									
+									$time_military = str_pad($time_number, 4, '0', STR_PAD_LEFT);
+									} else { $time_military = $time_number + 500; }
+									
+									if ($time_number < 1900 ) {
+									
+										if ($time_check == 30){
+										 $time_in_12_hour_format = date("g:i ", strtotime($time_military));
+										} else { $time_in_12_hour_format = date("g", strtotime($time_military));}
+									
+									
+								      	} else {
+								      	if ($time_check == 30){
+										 $time_in_12_hour_format = date("g:i a", strtotime($time_military));
+										 } else {
+									      	$time_in_12_hour_format = date("g a", strtotime($time_military));
+									      	}
+									      }
+									
+									$time_number_end = get_post_meta( get_the_ID(), 'end_time', true );
+									$time_check_end = date("i", strtotime($time_number_end));
+																		
+									if ($time_number_end >= 2000 ) { $time_number_end = $time_number_end - 1900; 
+									$time_military_end = $time_number_end;
+									
+									$time_military_end = str_pad($time_number_end, 4, '0', STR_PAD_LEFT);
+									} else { $time_military_end = $time_number_end + 500; }
+																
+									//Add leading 0 for military time
+									if ($time_number_end > 1900 ) {
+									
+										if ($time_check_end == 30){
+										 $time_in_12_hour_end_format = date("g:i ", strtotime($time_military_end));
+										} else { $time_in_12_hour_end_format = date("g", strtotime($time_military_end));}									
+									
+								      	} else {
+								      	
+								      		if ($time_check_end == 30){
+										 $time_in_12_hour_end_format = date("g:i a", strtotime($time_military_end));
+										 } else {
+									      	$time_in_12_hour_end_format = date("g a", strtotime($time_military_end));
+									      	}
+								      	}
+								      	
+								      	echo 'Time: ' . $time_in_12_hour_format . ' - ' . $time_in_12_hour_end_format;							
+								?>
+								</b></h5>
+							</div>
+				                    	
+				                    	<div id="deal-website">				                    	
+				                    	<a href="<?php echo $deal_website; ?>"><span style="font-weight: 400;">Visit Website</span></a>
+				                    	</div> 
+			                    	
 			                    		<?php the_content(); ?>
+			                    		
 			                    	</div>
 			                    	<div class="deal-type">
-			                    	<?php $categories = get_the_category(); 
+			                    	<!-- <?php $categories = get_the_category(); 
 						if ( ! empty( $categories ) ) {
-						    echo esc_html( 'Type: ' . $categories[0]->name );   
-						} ?>
+						   echo esc_html( 'Type: ' . $categories[0]->name );   
+						} ?> -->
 						</div>
 						<div class="deal-day">
-			                    	<?php $deal_day = get_post_meta( get_the_ID(), '_deal_day', true );
+			                    	<!-- <?php $deal_day = get_post_meta( get_the_ID(), '_deal_day', true );
 			                    		if (count($deal_day) === 1) {
 								    echo 'Day: ';
 								    foreach ($deal_day as $day) {
@@ -315,29 +448,11 @@ get_header(); ?>
 			                    			}
 			                    			$result = rtrim($result,', ');
 								echo $result;
-			                    		} 
+			                    		}
 			                    		unset($result);
-			                    	 ?>
+			                    	 ?> -->
 						</div>
-						<div class="deal-time">
-						<?php   $time_number = get_post_meta( get_the_ID(), 'start_time', true );
-						        $time_military = $time_number + 500;
-							$time_in_12_hour_format = date("g:i a", strtotime($time_military));
-							
-							$time_number_end = get_post_meta( get_the_ID(), 'end_time', true );
-							
-							if ($time_number_end >= 2000 ) { $time_number_end = $time_number_end - 1900; 
-							$time_military_end = $time_number_end;
-							$time_military_end = str_pad($time_number_end, 4, '0', STR_PAD_LEFT);
-							} else { $time_military_end = $time_number_end + 500; }
-														
-							//Add leading 0 for military time
-							
-							$time_in_12_hour_end_format = date("g:i a", strtotime($time_military_end));
-						      	
-						      	echo 'Time: ' . $time_in_12_hour_format . ' - ' . $time_in_12_hour_end_format;							
-						?>
-						</div>
+						
 			                </div>
 			            </div>
 			        <?php endwhile;
