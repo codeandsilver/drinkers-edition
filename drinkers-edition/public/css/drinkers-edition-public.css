@@ -12,8 +12,12 @@
 .deal-info {
     padding: 20px;
 }
+.my-deal-info {
+    padding: 51px;
+}
 .deal-title h2 a, .deal-title h2 {
     color: #d4a001;
+    font-size: 21px;
 }
 .deal-description {
 	margin-top: 15px;
@@ -55,4 +59,30 @@
 }
 .heart:hover, .heart:active, .heart:focus {
 	background: #fff;
+}
+.row-eq-height {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+.deal-image img {
+    width: 100%!important;
+    height: 100% !important;
+}
+.my-deal-image {
+	padding: 0px;
+}
+.deals-list ul {
+    margin: 20px;
+    list-style: none;
+}
+.deals-list ul li {
+    padding: 25px;
+    box-shadow: 0 0 5px #ccc;
+    margin: 15px 0px;
+}
+.deals-list ul li a {
+    color: #d4a001;
+    font-size: 21px;
 }
