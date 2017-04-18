@@ -111,7 +111,7 @@ get_header(); ?>
 					     
 			    if ( $loop->have_posts() ) :
 			        while ( $loop->have_posts() ) : $loop->the_post(); ?>
-			            <div class="deals-wrap row">
+			            <div class="deals-wrap row row-eq-height">
 			                <?php if ( has_post_thumbnail() ) { ?>
 			                    <div class="deal-image col-md-6">
 			                        <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail(); ?></a>
@@ -125,6 +125,8 @@ get_header(); ?>
 			                    	<?php $id = get_the_ID(); 
 			                    	$hearted = get_post_meta( get_the_ID(), 'hearted', false );
 			                    	$current_user_id = get_current_user_id();
+			                    	
+			                    	if ( is_user_logged_in() ) {
 			                    	?>
 			                    	
 			                    	<div class="deal-heart">
@@ -135,6 +137,8 @@ get_header(); ?>
 			                    	<button id="heart-<?php echo get_the_ID(); ?>" class="heart" data-postid="<?php echo get_the_ID(); ?>">
 			                    	<i class="fa fa-heart" aria-hidden="true"></i></button>	<?php } ?>		                    	
 			                    	</div>
+			                    	
+			                    	<?php } ?>
 			                    				                    	                  	
 			                    	<div class="deal-description">
 			                    	
@@ -311,7 +315,7 @@ get_header(); ?>
 					     
 			    if ( $loop_2->have_posts() ) :
 			        while ( $loop_2->have_posts() ) : $loop_2->the_post(); ?>
-			            <div class="deals-wrap row">
+			            <div class="deals-wrap row row-eq-height">
 			                <?php if ( has_post_thumbnail() ) { ?>
 			                    <div class="deal-image col-md-6">
 			                        <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail(); ?></a>
@@ -325,6 +329,8 @@ get_header(); ?>
 			                    	<?php $id = get_the_ID(); 
 			                    	$hearted = get_post_meta( get_the_ID(), 'hearted', false );
 			                    	$current_user_id = get_current_user_id();
+			                    	
+			                    	if ( is_user_logged_in() ) {
 			                    	?>
 			                    	
 			                    	<div class="deal-heart">
@@ -335,6 +341,8 @@ get_header(); ?>
 			                    	<button id="heart-<?php echo get_the_ID(); ?>" class="heart" data-postid="<?php echo get_the_ID(); ?>">
 			                    	<i class="fa fa-heart" aria-hidden="true"></i></button>	<?php } ?>		                    	
 			                    	</div>
+			                    	
+			                    	<?php } ?>
 			                    				                    	                  	
 			                    	<div class="deal-description">
 			                    	
