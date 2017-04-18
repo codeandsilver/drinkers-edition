@@ -26,13 +26,22 @@ get_header(); ?>
 			
 			<article id="post-1" class="post-1 post type-post status-publish format-standard hentry category-uncategorized">		
 		 
-			<?php if ($happy_hour == 1) {
-				echo '<h1 id="header-title">Happy Hour Deals</h1>';			
-			} elseif ($my_deals == 1){
-				echo '<h1 id="header-title">My Deals</h1>';
-			}?>
+			<h3 style='margin:20px 0px; text-align:center;'>Deals You’ve Purchased</h3>
+			
+			<div id="purchased-deals" class="deals-list">
+			<?php echo do_shortcode( "[woocommerce-payperpost template='purchased']" ); ?>
+			</div>
+			
+			<h3 style='margin:20px 0px; text-align:center;'>Available Deals</h3>
+			
+			<div id="all-deals" class="deals-list">
+			<?php echo do_shortcode( "[woocommerce-payperpost template='all']" ); ?>
+			</div>
+			
+			<h3 style='margin:20px 0px; text-align:center;'>Facebook Deals</h3>
+			
 
-		<?php   $loop = new WP_Query( array( 'post_type' => 'deals', 
+		<?php   $loop = new WP_Query( array( 'post_type' => 'facebook-deals', 
 						    'paged' => $paged, 
 						    'cat' => $deal_cat, 
 						    'date_query' => array(
@@ -69,33 +78,14 @@ get_header(); ?>
 			        while ( $loop->have_posts() ) : $loop->the_post(); ?>
 			            <div class="deals-wrap row">
 			                <?php if ( has_post_thumbnail() ) { ?>
-			                    <div class="deal-image col-md-6">
+			                    <div class="my-deal-image col-md-2">
 			                        <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail(); ?></a>
 			                    </div>
 			                <?php } ?>
-			                <div class="deal-info col-md-6">
+			                <div class="my-deal-info col-md-10">
 			                	<div class="deal-title">
 			                    		<h2><a href="<?php the_permalink(); ?>"><?php echo get_the_title(); ?></a></h2>
-			                    	</div>
-			                    	<div class="deal-description">
-			                    		<?php the_content(); ?>
-			                    	</div>
-			                    	<div class="deal-type">
-			                    	<?php $categories = get_the_category(); 
-						if ( ! empty( $categories ) ) {
-						    echo esc_html( 'Type: ' . $categories[0]->name );   
-						} ?>
-						</div>
-						<div class="deal-date">
-			                    	Deal Date: <?php echo get_the_date( 'F j, Y' ); ?>
-						</div>
-						<div class="deal-time">
-						<?php   $time_number = get_post_meta( get_the_ID(), 'start_time', true );
-						        $time_military = $time_number . ':00';
-							$time_in_12_hour_format = date("g:i a", strtotime($time_military));
-							echo 'Deal Time: ' . $time_in_12_hour_format;
-						?>
-						</div>
+			                    	</div>			                    	
 			                </div>
 			            </div>
 			        <?php endwhile;
