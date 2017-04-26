@@ -160,7 +160,7 @@ class Drinkers_Edition {
 		$this->loader->add_action( 'save_post', $plugin_admin, 'save_deals_meta_box');
 		$this->loader->add_action('admin_init', $plugin_admin, 'fontawesome_dashboard');
 		$this->loader->add_action('admin_head', $plugin_admin, 'fontawesome_icon_dashboard');
-		
+		$this->loader->add_action('wp_ajax_heart_meta', $plugin_admin, 'heart_meta');
 		// Enable shortcodes in text widgets
 		add_filter('widget_text','do_shortcode');
 
@@ -182,12 +182,13 @@ class Drinkers_Edition {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'add_datepicker_in_footer',10);
 		
+		
 		$this->loader->add_filter( 'archive_template', $plugin_public, 'deals_template_archive' );		
 		$this->loader->add_filter( 'single_template', $plugin_public, 'deals_template_single' );
 		
 		
 		add_shortcode('dealsform', array( $plugin_public, 'custom_deals_filter'));
-		
+		add_shortcode('code', array( $plugin_public, 'code_generate_buttun'));
 	}
 
 	/**
