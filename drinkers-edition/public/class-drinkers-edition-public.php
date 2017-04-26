@@ -146,15 +146,16 @@ class Drinkers_Edition_Public {
 	
 		<p style="text-align: center;"><a href="http://codeandsilver.com/drinkers/happy-hours/?happy-hour=1">Happy Hour</a></p>
 		<p style="text-align: center;"><a href="http://codeandsilver.com/drinkers/deals">My Deals</a></p>
-	
-	
+		
 		<form>
 		
 		<?php 
 		$happy_hour = $_GET["happy-hour"];
 		if ($happy_hour == 1) { ?>
 		<input type="hidden" name="happy-hour" value="<?php echo $_GET["happy-hour"]; ?>">
-		<?php } ?>
+		<?php } 
+		
+		ob_start(); ?>
 					
 		<select name="deal-time">
 		  <option value="">Deal Time</option>
@@ -186,11 +187,13 @@ class Drinkers_Edition_Public {
 	        'taxonomy'           => 'category',
 	        'hide_if_empty'      => false,
 	             ); ?>
-		<?php wp_dropdown_categories( $args ); ?></br></br>
+		<?php //wp_dropdown_categories( $args ); ?></br></br>
 		
 		
-		<input type="submit" vale="Get Deals">
+		<input type="submit" value="Get Deals">
 		</form><?php
+	
+		return ob_get_clean();
 	
 	}
 	
@@ -207,11 +210,60 @@ class Drinkers_Edition_Public {
 		<script type="text/javascript">
 		jQuery(document).ready(function(){
 		    jQuery('#date').datepicker({
-		        dateFormat: 'dd-mm-yy'
+		        dateFormat: 'mm-dd-yy'
 		    });
 		});
 		</script><?php		
 	}
-		
+	
+	function generate_random_code($length = 5) {
+   	
+	    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	    $characters_length = strlen($characters);
+	    $random_code = '';
+	    for ($i = 0; $i < $length; $i++) {
+	        $random_code .= $characters[rand(0, $characters_length - 1)];
+	    }
+	    return $random_code;
+	    
+	}	
 
+	public function code_generate_buttun() {
+	
+		$value_user = '';
+		$used_code = 0;
+		$code_value = $this->generate_random_code();
+		date_default_timezone_set('America/Chicago');
+		$currenttime = date('g:i:s:u:A:j:n:Y:');
+		list($hrs,$mins,$secs,$msecs,$ampm,$dy,$mth,$yr) = split(':',$currenttime);
+		$code_time_stamp = '-' . $hrs . ':' . $mins . $ampm . '-' . $mth . '-'. $dy . '-' . $yr;
+		$deal_code = $code_value . $code_time_stamp;
+		
+		if ($used_code === 1 ) {
+		
+		return $code_value . $code_time_stamp;
+		
+		} else {
+		
+		$button_out .='<form id="redeem-form" method="post" action"">';
+		$button_out .='<input type="hidden" name="used_code" value="1">';
+		$button_out .='<input type="hidden" name="code_time_stamp" value="'.$deal_code.'">';
+		$button_out .='<input type="hidden" name="user_id" value="'.$value_user.'">';
+		$button_out .='<input type="submit" class="generate_code" value="Redeem Deal">';
+		$button_out .='</form>';
+		
+		$meta_deal_code = $_POST['code_time_stamp'];
+		$meta_used_code = $_POST['used_code'];
+		
+		// Update the meta field.
+	        
+	        echo $meta_deal_code . '<br>';
+	        		
+		return $button_out;
+		
+		}
+		
+		   		      		  		
+   	}   	
+   	
 }
