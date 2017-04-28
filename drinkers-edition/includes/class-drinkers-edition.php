@@ -75,6 +75,7 @@ class Drinkers_Edition {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+		$this->define_woo_hooks();
 
 	}
 
@@ -112,6 +113,7 @@ class Drinkers_Edition {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-drinkers-edition-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-drinkers-woo-mods.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -163,6 +165,16 @@ class Drinkers_Edition {
 		$this->loader->add_action('wp_ajax_heart_meta', $plugin_admin, 'heart_meta');
 		// Enable shortcodes in text widgets
 		add_filter('widget_text','do_shortcode');
+
+	}
+	
+	private function define_woo_hooks() {
+
+		$plugin_woo = new Drinkers_Edition_Woo_Mods( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'init', $plugin_woo, 'register_deal_redeemed_order_status' );
+		$this->loader->add_action( 'wc_order_statuses', $plugin_woo, 'add_deal_redeemed_to_order_statuses' );		
+		
 
 	}
 
