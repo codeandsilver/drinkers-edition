@@ -29,13 +29,13 @@ get_header(); ?>
 			<h3 style='margin:20px 0px; text-align:center;'>Deals You’ve Purchased</h3>
 			
 			<div id="purchased-deals" class="deals-list">
-			<?php echo do_shortcode( "[woocommerce-payperpost template='purchased']" ); ?>
+			<?php echo do_shortcode( "[woocommerce-payperdeal template='purchased']" ); ?>
 			</div>
 			
 			<h3 style='margin:20px 0px; text-align:center;'>Available Deals</h3>
 			
 			<div id="all-deals" class="deals-list">
-			<?php echo do_shortcode( "[woocommerce-payperpost template='all']" ); ?>
+			<?php echo do_shortcode( "[woocommerce-payperdeal template='all']" ); ?>
 			</div>
 			
 			<h3 style='margin:20px 0px; text-align:center;'>Facebook Deals</h3>
@@ -97,6 +97,13 @@ get_header(); ?>
 			        <?php endif;
 			    endif;
 			    wp_reset_postdata(); ?>
+			    
+			    <h3 style='margin:20px 0px; text-align:center;'>Redeemed Deals</h3>
+			
+			<div id="all-deals" class="deals-list">	
+			<?php echo do_shortcode( "[woocommerce-payperdeal template='deal-redeemed']" ); ?>
+			</div>
+			    
 			</article>
 		</main><!-- .site-main -->
 	</div><!-- .content-area -->
