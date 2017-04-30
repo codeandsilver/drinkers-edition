@@ -24,13 +24,18 @@ get_header(); ?>
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
 			
-			<article id="post-1" class="post-1 post type-post status-publish format-standard hentry category-uncategorized">		
+			<article id="post-1" class="post-1 post type-post status-publish format-standard hentry category-uncategorized">
+			
+			<?php if ( is_user_logged_in() ) { ?>		
 		 
 			<h3 style='margin:20px 0px; text-align:center;'>Deals You’ve Purchased</h3>
 			
 			<div id="purchased-deals" class="deals-list">
 			<?php echo do_shortcode( "[woocommerce-payperdeal template='purchased']" ); ?>
+				
 			</div>
+			
+			<?php }?>
 			
 			<h3 style='margin:20px 0px; text-align:center;'>Available Deals</h3>
 			
@@ -96,14 +101,18 @@ get_header(); ?>
 			            </div>
 			        <?php endif;
 			    endif;
-			    wp_reset_postdata(); ?>
+			    wp_reset_postdata(); 
 			    
-			    <h3 style='margin:20px 0px; text-align:center;'>Redeemed Deals</h3>
+			if ( is_user_logged_in() ) {?>
+			
+			<h3 style='margin:20px 0px; text-align:center;'>Redeemed Deals</h3>
 			
 			<div id="all-deals" class="deals-list">	
 			<?php echo do_shortcode( "[woocommerce-payperdeal template='deal-redeemed']" ); ?>
 			</div>
 			    
+			<?php }?>
+			
 			</article>
 		</main><!-- .site-main -->
 	</div><!-- .content-area -->
